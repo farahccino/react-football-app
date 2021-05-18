@@ -1,146 +1,146 @@
-import styled from 'styled-components/macro';
+import styled from 'styled-components';
 import { useState } from 'react';
-//import Soccerfieldimg from '../src/images/soccerfield.png';
+
 export default function PlayerForm({ onAddPlayer }) {
-  const initialPlayerState = {
-    //anlegen eines Prototyps für alle properties (key)
+  const initialPlayer = {
     name: '',
     price: '',
     free_transfer: false,
+    club: '',
     position: '',
     email: '',
-    club: '',
   };
-  const [player, setPlayer] = useState([]);
+
+  const [player, setPlayer] = useState(initialPlayer);
+
   function updatePlayer(event) {
     const fieldName = event.target.name;
     let fieldValue = event.target.value;
+
     if (event.target.type === 'checkbox') {
-      // checkbox übermittelt keinen value, deshalb immer im State speichern
-      fieldValue = event.target.checked; // ist true oder false
+      fieldValue = event.target.checked;
     }
-    setPlayer({ ...player, [fieldName]: fieldValue }); // property (key) dynamisch erzeugt, deshalb []
+
+    setPlayer({ ...player, [fieldName]: fieldValue });
   }
+
   function handleFormSubmit(event) {
     event.preventDefault();
     onAddPlayer(player);
   }
+
   return (
     <Form onSubmit={handleFormSubmit}>
-      <h3>Add a new Player</h3>
-      <label>Player Name</label>
+      <label htmlFor="name">Player Name</label>
       <input
         type="text"
         name="name"
         onChange={updatePlayer}
         value={player.name}
       />
-      <label>Transfer Price</label>
+
+      <label htmlFor="price">Transfer Price (in €)</label>
       <input
         type="text"
         name="price"
-        onChange={updatePlayer}
         value={player.price}
-        disabled={player.free_transfer ? true : false}
+        onChange={updatePlayer}
+        disabled={player.free_transfer}
       />
-      <label>On a free transfer</label>
+
+      <label htmlFor="free_transfer">Free transfer?</label>
       <input
         type="checkbox"
         name="free_transfer"
-        onChange={updatePlayer}
         value={player.free_transfer}
-        disabled={player.price !== ''}
+        onChange={updatePlayer}
+        checked={player.free_transfer}
+        disabled={player.price.length >= 1}
       />
+
       <label htmlFor="club">Club</label>
-      <select id="club" name="club" onChange={updatePlayer} value={player.club}>
-        <option value="select"> ---Please select --- </option>
-        <option value="fc_bayern">FC Bayern</option>
-        <option value="sv_werder">SV Werder</option>
-        <option value="vfb_stuttgart">VFB Stuttgart</option>
-        <option value="rb_leipzig">RB Leipzig</option>
-        <option value="st_pauli">FC St. Pauli</option>
-        <option value="fc_koeln">1. FC Köln</option>
+      <select name="club" id="club" value={player.club} onChange={updatePlayer}>
+        <option value="">Select the Club</option>
+        <option value="FC Bayern München">FC Bayern</option>
+        <option value="St. Pauli">St Pauli</option>
+        <option value="FC Arsenal">FC Arsenal</option>
+        <option value="Manchester city">Manchester City</option>
+        <option value="FC Barcelona">FC Barcelona</option>
+        <option value="Paris Saint-Germain">Paris Saint-Germain</option>
+        <option value="FC Liverpool">FC Liverpool</option>
+        <option value="Juventus Turin">Juventus Turin</option>
       </select>
+
       <label htmlFor="position">Position</label>
       <Position>
-        <label>
-          <input
-            type="radio"
-            value="striker"
-            name="position"
-            onChange={updatePlayer}
-            checked={player.position === 'striker'}
-          />{' '}
-          Striker
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="midfield"
-            name="position"
-            onChange={updatePlayer}
-            checked={player.position === 'midfield'}
-          />{' '}
-          Midfield
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="defence"
-            name="position"
-            onChange={updatePlayer}
-            checked={player.position === 'defence'}
-          />{' '}
-          Defense
-        </label>
-        <label>
-          <input
-            type="radio"
-            value="goalie"
-            name="position"
-            onChange={updatePlayer}
-            checked={player.position === 'goalie'}
-          />{' '}
-          Goalie
-        </label>
+        <input
+          type="radio"
+          name="position"
+          value="striker"
+          onChange={updatePlayer}
+          checked={player.position === 'striker'}
+        />{' '}
+        Striker
+        <input
+          type="radio"
+          name="position"
+          value="midfield"
+          onChange={updatePlayer}
+          checked={player.position === 'midfield'}
+        />{' '}
+        Midfield
+        <input
+          type="radio"
+          name="position"
+          value="defence"
+          onChange={updatePlayer}
+          checked={player.position === 'defence'}
+        />{' '}
+        Defence
+        <input
+          type="radio"
+          name="position"
+          value="goalie"
+          onChange={updatePlayer}
+          checked={player.position === 'goalie'}
+        />{' '}
+        Goalie
       </Position>
       <label htmlFor="email">Contact</label>
-      <input
-        type="text"
-        name="email"
-        value={player.email}
-        onChange={updatePlayer}
-      />
+      <input type="email" name="email" onChange={updatePlayer} />
       <Buttons>
         <Button isPrimary type="submit">
-          Add player
+          Add
         </Button>
-        <Button onClick={() => setPlayer(initialPlayerState)} type="reset">
-          Cancel
-        </Button>
+        <Button type="cancel">Cancel</Button>
       </Buttons>
     </Form>
   );
 }
+
 const Form = styled.form`
-  background: white;
   display: grid;
   gap: 0.5rem;
-  margin: 0 auto;
+  margin-left: 10%;
+  width: 22rem;
   label {
     font-weight: bold;
-    font-size: 20px;
-    color: green;
+    font-family: sans-serif;
+    margin-bottom: 0.5rem;
   }
   input,
   select {
-    font-size: 1.25rem;
+    display: flex;
+    font-size: 1.125rem;
+    font-family: sans-serif;
+    margin-bottom: 1.5rem;
   }
   input[type='checkbox'],
   input[type='radio'] {
-    transform: scale() (1.4);
+    transform: scale(1.4);
   }
 `;
+
 const Position = styled.section`
   display: flex;
   gap: 1rem;
@@ -148,11 +148,16 @@ const Position = styled.section`
 const Buttons = styled.section`
   display: flex;
   gap: 1rem;
-  padding: 0.5rem;
+  padding: 2rem 0;
 `;
 const Button = styled.button`
   padding: 1rem;
-  border-radius: 5rem;
-  background: white;
+  border-radius: 0.5rem;
+  background: none;
   cursor: pointer;
+  border: none;
+  font-size: 1.2rem;
+  width: 10rem;
+  background: ${(props) => (props.isPrimary ? '#9e37a2' : 'none')};
+  color: white;
 `;

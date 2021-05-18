@@ -1,16 +1,13 @@
 import { createGlobalStyle } from 'styled-components';
 
-export default createGlobalStyle`
+export const GlobalStyle = createGlobalStyle`
 * {
-  box-sizing: border-box;
+    box-sizing: border-box;
 }
 body {
-  font-size: 1.125rem;
-  font-family: sans-serif;
-  margin: 0;
-  padding: 0;
-}
-h1 {
-  text-align: center;
+background-image: url('https://gmedia.playstation.com/is/image/SIEPDC/fifa-21-background-block-desktop-01-en-19jun20?$native$');
+background-repeat: no-repeat;
+background-size: cover;
+color: white; 
 }
 `;
