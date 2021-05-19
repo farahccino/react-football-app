@@ -9,6 +9,7 @@ function App() {
   function addPlayers(player) {
     setPlayers([...players, player]);
   }
+  
 
   return (
     <div className="App">

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { useState } from 'react';
+import Tags from './Tags.js'
 
 export default function PlayerForm({ onAddPlayer }) {
   const initialPlayer = {
@@ -9,6 +10,7 @@ export default function PlayerForm({ onAddPlayer }) {
     club: '',
     position: '',
     email: '',
+    skills: [],
   };
 
   const [player, setPlayer] = useState(initialPlayer);
@@ -23,6 +25,16 @@ export default function PlayerForm({ onAddPlayer }) {
 
     setPlayer({ ...player, [fieldName]: fieldValue });
   }
+
+
+function updateSkills(skillsToAdd) {
+  setPlayer({...player, skills: [...player.skills, skillsToAdd]});
+}
+
+function deleteSkill(skillToDelete) {
+  const skillsToKeep = player.skills.filter((skill) => skill !== skillToDelete)
+  setPlayer({...player, skills: skillsToKeep});
+}
 
   function handleFormSubmit(event) {
     event.preventDefault();
@@ -106,6 +118,9 @@ export default function PlayerForm({ onAddPlayer }) {
         />{' '}
         Goalie
       </Position>
+
+  <Tags tags={player.skills} onUpdateTags={updateSkills} onDeleteTag={deleteSkill} />
+
       <label htmlFor="email">Contact</label>
       <input type="email" name="email" onChange={updatePlayer} />
       <Buttons>

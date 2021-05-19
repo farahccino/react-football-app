@@ -11,9 +11,9 @@ export default function PlayerCard({ player }) {
       <p>{player.position.toUpperCase()}</p>
       <p>{player.free_transfer ? 'free transfer' : player.price + ' €'}</p>
       <p>{player.club.toUpperCase()}</p>
-
+      <p>{player.skills.map(skill => <span>{skill}</span>)}</p>
       <p>
-        {' '}
+       {' '}
         Email: <a href={`mailto:${player.email}`}>{player.email}</a>
       </p>
     </Card>
