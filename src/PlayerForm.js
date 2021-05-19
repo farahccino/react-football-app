@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useState } from 'react';
 import Tags from './Tags.js'
+import validatePlayer from './images/lib/Validation.js';
 
 export default function PlayerForm({ onAddPlayer }) {
   const initialPlayer = {
@@ -14,6 +15,7 @@ export default function PlayerForm({ onAddPlayer }) {
   };
 
   const [player, setPlayer] = useState(initialPlayer);
+  const [isError, setIsError] = useState(false);
 
   function updatePlayer(event) {
     const fieldName = event.target.name;
@@ -39,10 +41,20 @@ function deleteSkill(skillToDelete) {
   function handleFormSubmit(event) {
     event.preventDefault();
     onAddPlayer(player);
-  }
 
+    if(validatePlayer(player)) {
+      onAddPlayer(player);
+      setPlayer(initialPlayer);
+      setIsError(false);
+    } else {
+      setIsError(true);
+    }
+  }
   return (
+    
     <Form onSubmit={handleFormSubmit}>
+      <h2>Add new player</h2>
+      {isError && <ErrorBox>You have an error in your form.</ErrorBox>}
       <label htmlFor="name">Player Name</label>
       <input
         type="text"
@@ -132,6 +144,10 @@ function deleteSkill(skillToDelete) {
     </Form>
   );
 }
+
+const ErrorBox = styled.div`
+background: limegreen;
+`
 
 const Form = styled.form`
   display: grid;
